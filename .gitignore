@@ -1,0 +1,48 @@
+
+# Java compiled files
+*.class
+*.jar
+*.war
+
+# Maven
+Backend/target/
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# H2 database files
+Backend/data/
+**/*.mv.db
+**/*.trace.db
+**/*.lock.db
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+application-local.properties
+
+# Logs
+*.log
+logs/
+
+# IDE files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# VS Code local settings
+.vscode/
+
+# Node dependencies and builds
+node_modules/
+dist/
+build/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Project backups
+PayTrack-Backup-*/
