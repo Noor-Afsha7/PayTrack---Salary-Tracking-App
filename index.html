@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayTrack | Payroll Management</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <a href="#" class="brand">
+        <span class="brand-logo">P</span>
+        PayTrack
+    </a>
+
+    <nav class="navigation">
+        <a href="#overview" class="nav-link active" data-page="overview">Overview</a>
+        <a href="#employees" class="nav-link" data-page="employees">Employees</a>
+        <a href="#payroll" class="nav-link" data-page="payroll">Payroll</a>
+    </nav>
+
+    <div class="topbar-right">
+        <span class="admin-label">Administrator</span>
+        <button class="btn btn-outline" id="logoutButton">Logout</button>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">PAYROLL MANAGEMENT / <span id="currentSection">OVERVIEW</span></p>
+            <h1 id="pageTitle">Payroll Overview</h1>
+            <p id="pageDescription">Manage your workforce and payroll operations.</p>
+        </div>
+
+        <div class="current-date" id="currentDate"></div>
+    </section>
+
+    <!-- OVERVIEW -->
+
+    <section class="page-section" id="overviewPage">
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <p>Total Employees</p>
+                <h2 id="totalEmployees">0</h2>
+                <span>Registered employees</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Active Employees</p>
+                <h2 id="activeEmployees">0</h2>
+                <span>Currently working</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Payroll Records</p>
+                <h2 id="totalPayrolls">0</h2>
+                <span>Generated payrolls</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Total Net Payroll</p>
+                <h2 id="totalNetPayroll">₹0</h2>
+                <span>Recorded net payments</span>
+            </div>
+
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h3>Recent Payroll Activity</h3>
+                    <p>Recently generated salary records</p>
+                </div>
+
+                <button class="btn btn-outline" data-navigate="payroll">
+                    View All
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EMPLOYEE</th>
+                            <th>PERIOD</th>
+                            <th>GROSS SALARY</th>
+                            <th>NET SALARY</th>
+                            <th>DATE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentPayrollTable">
+                        <tr>
+                            <td colspan="5" class="empty-state">No payroll records available.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- EMPLOYEES -->
+
+    <section class="page-section" id="employeesPage" hidden>
+
+        <div class="section-toolbar">
+            <div>
+                <h2>Employee Directory</h2>
+                <p>Manage employee information and salary details.</p>
+            </div>
+
+            <button class="btn btn-primary" id="addEmployeeButton">
+                + Add Employee
+            </button>
+        </div>
+
+        <div class="panel">
+            <div class="table-toolbar">
+                <input type="search" id="employeeSearch" placeholder="Search employees...">
+                <span id="employeeCount">0 employees</span>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EMPLOYEE</th>
+                            <th>DEPARTMENT</th>
+                            <th>DESIGNATION</th>
+                            <th>BASIC SALARY</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTable">
+                        <tr>
+                            <td colspan="6" class="empty-state">No employees found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- PAYROLL -->
+
+    <section class="page-section" id="payrollPage" hidden>
+
+        <div class="section-toolbar">
+            <div>
+                <h2>Payroll Processing</h2>
+                <p>Generate salaries and manage payroll history.</p>
+            </div>
+
+            <button class="btn btn-primary" id="generatePayrollButton">
+                + Generate Payroll
+            </button>
+        </div>
+
+        <div class="panel">
+            <div class="table-toolbar">
+                <input type="month" id="payrollMonth">
+                <span id="payrollCount">0 records</span>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EMPLOYEE</th>
+                            <th>PERIOD</th>
+                            <th>GROSS SALARY</th>
+                            <th>DEDUCTIONS</th>
+                            <th>NET SALARY</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payrollTable">
+                        <tr>
+                            <td colspan="6" class="empty-state">No payroll records found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+</main>
+
+<!-- EMPLOYEE MODAL -->
+
+<div class="modal-overlay" id="employeeModal" hidden>
+    <div class="modal">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">EMPLOYEE INFORMATION</p>
+                <h2 id="employeeModalTitle">Add Employee</h2>
+            </div>
+            <button class="close-button" data-close="employeeModal">×</button>
+        </div>
+
+        <form id="employeeForm">
+
+            <input type="hidden" id="employeeId">
+
+            <div class="form-grid">
+
+                <label>
+                    Full Name
+                    <input type="text" id="fullName" required>
+                </label>
+
+                <label>
+                    Email Address
+                    <input type="email" id="email" required>
+                </label>
+
+                <label>
+                    Department
+                    <input type="text" id="department" required>
+                </label>
+
+                <label>
+                    Designation
+                    <input type="text" id="designation" required>
+                </label>
+
+                <label>
+                    Basic Salary (₹)
+                    <input type="number" id="basicSalary" min="0.01" step="0.01" required>
+                </label>
+
+                <label>
+                    HRA (₹)
+                    <input type="number" id="hra" min="0" step="0.01" value="0" required>
+                </label>
+
+                <label>
+                    Allowances (₹)
+                    <input type="number" id="allowances" min="0" step="0.01" value="0" required>
+                </label>
+
+                <label>
+                    Other Deductions (₹)
+                    <input type="number" id="otherDeductions" min="0" step="0.01" value="0" required>
+                </label>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="active" checked>
+                    Active Employee
+                </label>
+
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" data-close="employeeModal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Employee</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- PAYROLL MODAL -->
+
+<div class="modal-overlay" id="payrollModal" hidden>
+    <div class="modal modal-small">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">MONTHLY PROCESSING</p>
+                <h2>Generate Payroll</h2>
+            </div>
+            <button class="close-button" data-close="payrollModal">×</button>
+        </div>
+
+        <form id="payrollForm">
+
+            <label>
+                Select Employee
+                <select id="payrollEmployee" required>
+                    <option value="">Select an employee</option>
+                </select>
+            </label>
+
+            <label>
+                Pay Period
+                <input type="month" id="payPeriod" required>
+            </label>
+
+            <p class="form-note">
+                Payroll deductions will be calculated using the configured project rates.
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" data-close="payrollModal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Generate</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

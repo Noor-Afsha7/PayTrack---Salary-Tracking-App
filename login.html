@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayTrack | Sign In</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 25px;
+        }
+
+        .login-card {
+            width: min(420px, 100%);
+            background: white;
+            padding: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .login-card h1 {
+            font-family: Poppins, sans-serif;
+            font-size: 25px;
+            margin: 25px 0 8px;
+        }
+
+        .login-card > p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 28px;
+        }
+
+        .login-card form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-card button {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .login-error {
+            color: #b42318;
+            background: #fff0ef;
+            padding: 11px;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <a href="login.html" class="brand">
+            <span class="brand-logo">P</span>
+            PayTrack
+        </a>
+
+        <h1>Welcome back</h1>
+        <p>Sign in to access your payroll dashboard.</p>
+
+        <div id="loginError" class="login-error" hidden></div>
+
+        <form id="loginForm">
+
+            <label>
+                Username
+                <input type="text" id="username" required placeholder="Enter username">
+            </label>
+
+            <label>
+                Password
+                <input type="password" id="password" required placeholder="Enter password">
+            </label>
+
+            <button type="submit" class="btn btn-primary">
+                Sign In
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    const API_BASE = "http://localhost:8080";
+
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const errorBox = document.getElementById("loginError");
+        errorBox.hidden = true;
+
+        try {
+            const response = await fetch(`${API_BASE}/api/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: document.getElementById("username").value,
+                    password: document.getElementById("password").value
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Invalid username or password.");
+            }
+
+            localStorage.setItem("paytrack_token", data.token);
+
+            window.location.href = "index.html";
+
+        } catch (error) {
+            errorBox.textContent = error.message;
+            errorBox.hidden = false;
+        }
+    });
+</script>
+
+</body>
+</html>
